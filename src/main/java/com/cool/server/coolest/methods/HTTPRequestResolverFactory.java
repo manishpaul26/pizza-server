@@ -13,7 +13,7 @@ public class HTTPRequestResolverFactory {
         if (request.getMethod().equalsIgnoreCase("GET")) {
             return new GetMethod(request, socket);
         } else if(request.getMethod().equalsIgnoreCase("POST")) {
-            return new PostMethod();
+            return new PostMethod(request, socket);
         } else {
             throw new MethodNotSupportedException();
         }

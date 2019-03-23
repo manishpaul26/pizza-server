@@ -1,25 +1,27 @@
 package com.cool.server.coolest;
 
+import com.cool.server.coolest.annotations.ChocoServlet;
 import com.cool.server.coolest.exceptions.MethodNotSupportedException;
 import com.cool.server.coolest.methods.HTTPMethod;
 import com.cool.server.coolest.methods.HTTPRequestResolverFactory;
+import org.reflections.Reflections;
 
 import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.nio.file.Files;
 import java.util.ArrayList;
-import java.util.Date;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
-import java.util.StringTokenizer;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
+import java.util.Map;
+import java.util.Set;
 
 public class CoolestServer {
 
@@ -27,13 +29,18 @@ public class CoolestServer {
 
     private Socket socket;
 
+    public static Map<String, Class<?>> servlets;
+
 
     CoolestServer(Socket connection) {
         this.socket = connection;
+        servlets = loadServlets();
     }
 
 
     public static void main(String args[]) {
+
+
 
         try (ServerSocket socket = new ServerSocket(PORT)) {
 
@@ -48,7 +55,7 @@ public class CoolestServer {
                 System.out.println("Running...");
                 CoolestServer server = new CoolestServer(socket.accept());
 
-                System.out.println("Sochet hashcode : " + socket.hashCode());
+                System.out.println("Socket hashcode : " + socket.hashCode());
 
                 server.run();
 
@@ -79,8 +86,8 @@ public class CoolestServer {
 
             HTTPRequest request = new HTTPRequest(lines);
 
-            HTTPMethod method1 = HTTPRequestResolverFactory.resolveMethod(request, this.socket);
-            method1.execute();
+            HTTPMethod method = HTTPRequestResolverFactory.resolveMethod(request, this.socket);
+            method.execute();
 
         } catch (IOException e) {
 
@@ -98,6 +105,30 @@ public class CoolestServer {
         System.out.println("exiting..");
 
     }
+
+    private Map<String, Class<?>> loadServlets() {
+
+        Reflections reflections = new Reflections("com.cool.server");
+
+        Set<Class<?>> annotated = reflections.getTypesAnnotatedWith(ChocoServlet.class);
+        if (annotated == null || annotated.size() == 0) {
+            return new HashMap<>(0);
+        }
+
+        Map<String, Class<?>> servlets = new HashMap<>(annotated.size());
+
+        Iterator<Class<?>> it = annotated.iterator();
+        while(it.hasNext()) {
+            Class<?> clazz = it.next();
+            ChocoServlet annotation = clazz.getDeclaredAnnotation(ChocoServlet.class);
+            servlets.put(annotation.path(), clazz);
+
+        }
+        return servlets;
+
+    }
+
+
 
 
 }

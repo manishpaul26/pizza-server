@@ -3,18 +3,18 @@ package com.cool.server.coolest.methods;
 import com.cool.server.coolest.ContentTypes;
 import com.cool.server.coolest.HTTPRequest;
 import com.cool.server.coolest.HTTPResponse;
-import com.cool.server.coolest.exceptions.MissingFileException;
 
 import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
+import java.lang.annotation.Annotation;
 import java.net.Socket;
 import java.nio.file.Files;
 import java.util.Date;
+import java.util.Set;
 
 public class GetMethod implements HTTPMethod {
 
@@ -64,34 +64,24 @@ public class GetMethod implements HTTPMethod {
                 out.println("Content-type: " + ContentTypes.TEXT_HTML);
 
             } else {
-
-                length = file.length();
-                fileData = Files.readAllBytes(file.toPath());
-
-                System.out.println("File length: " + length);
                 //FileInputStream fileInput = new FileInputStream(file);
 
                 System.out.println("Sending...");
 
                 String contentDisposition = "Content-Disposition: attachment; filename=miffy.png";
 
-                HTTPResponse response = new HTTPResponse(out);
-                //esponse.setHeaders();
-                response.setContentType(ContentTypes.TEXT_HTML);
-                response.setContentLength(length);
+                HTTPResponse response = new HTTPResponse(file);
                 response.setContentDisposition(contentDisposition);
 
-                out.println("HTTP/1.1 200 OK");
-                out.println("Server: Java Cool Server");
-                out.println("Date: " + new Date());
-                out.println("Content-length: " + length);
+                response.writeHeaders(out);
+                response.writeContent(outputStream);
 
-                out.println("Content-type: " + ContentTypes.TEXT_HTML);
             }
 
-            out.println();
-            out.flush();
-            outputStream.write(fileData);
+
+            Annotation[] a = GetMethod.class.getAnnotations();
+
+
 
 
             System.out.println("Completed.!");
