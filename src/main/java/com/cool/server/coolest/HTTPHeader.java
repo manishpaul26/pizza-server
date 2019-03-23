@@ -10,6 +10,7 @@ public class HTTPHeader {
     private final String protocol;
     private final String serverName;
     private final String connection;
+    private final Long contentLength;
 
 
     /**
@@ -40,6 +41,14 @@ public class HTTPHeader {
         tokenizer.nextToken();
         this.connection = tokenizer.nextToken();
 
+        if (inputReader.get(4).contains("length")) {
+            tokenizer = new StringTokenizer(inputReader.get(4));
+            tokenizer.nextToken();
+            this.contentLength = Long.valueOf(tokenizer.nextToken());
+        } else {
+            this.contentLength = 0L;
+        }
+
     }
 
 
@@ -61,5 +70,9 @@ public class HTTPHeader {
 
     public String getConnection() {
         return connection;
+    }
+
+    public Long getContentLength() {
+        return contentLength;
     }
 }

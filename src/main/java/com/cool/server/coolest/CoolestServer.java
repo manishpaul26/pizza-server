@@ -6,9 +6,14 @@ import com.cool.server.coolest.methods.HTTPMethod;
 import com.cool.server.coolest.methods.HTTPRequestResolverFactory;
 import org.reflections.Reflections;
 
+import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
@@ -17,6 +22,7 @@ import java.lang.reflect.Method;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -40,12 +46,9 @@ public class CoolestServer {
 
     public static void main(String args[]) {
 
-
-
         try (ServerSocket socket = new ServerSocket(PORT)) {
 
             System.out.println("Starting server on port.. " + socket.getLocalPort());
-
 
             BufferedReader in;
             PrintWriter out;
@@ -80,9 +83,37 @@ public class CoolestServer {
 
             List<String> lines = new ArrayList<>();
 
-            lines.add(in.readLine());
-            lines.add(in.readLine());
-            lines.add(in.readLine());
+            byte [] inputBytes = new byte[10000];
+            socket.getInputStream().read(inputBytes);
+            
+            StringBuffer buffer = new StringBuffer();
+
+            boolean newLine = false;
+            int endOfHeaders = 0;
+
+            for (int i=0; i<inputBytes.length; i++) {
+                char c = (char) inputBytes[i];
+                if (c == '\n') {
+                    newLine = true;
+                    lines.add(buffer.toString());
+                } else if (( (int) c == 13 && newLine)) {
+                    System.out.println("............. Detected end of headers............ i : " + i);
+                    endOfHeaders =  i;
+                    break;
+                } else {
+                    newLine = false;
+                    buffer.append(c);
+                }
+            }
+
+            byte [] binary = Arrays.copyOfRange(inputBytes, endOfHeaders + 2, inputBytes.length);
+
+            BufferedOutputStream writer = new BufferedOutputStream(new FileOutputStream("content/new.jpg"));
+            writer.write(binary);
+            writer.flush();
+            writer.close();
+
+            System.out.println("Aage badho...............");
 
             HTTPRequest request = new HTTPRequest(lines);
 
@@ -127,8 +158,5 @@ public class CoolestServer {
         return servlets;
 
     }
-
-
-
 
 }
