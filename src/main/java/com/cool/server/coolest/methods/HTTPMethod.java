@@ -1,6 +1,5 @@
 package com.cool.server.coolest.methods;
 
-public interface HTTPMethods {
-
+public interface HTTPMethod {
     int execute();
 }

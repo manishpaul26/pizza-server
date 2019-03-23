@@ -1,5 +1,9 @@
 package com.cool.server.coolest;
 
+import com.cool.server.coolest.exceptions.MethodNotSupportedException;
+import com.cool.server.coolest.methods.HTTPMethod;
+import com.cool.server.coolest.methods.HTTPRequestResolverFactory;
+
 import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
 import java.io.File;
@@ -10,18 +14,22 @@ import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.nio.file.Files;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.StringTokenizer;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class CoolestServer {
 
     public static final int PORT = 4444;
 
-    private Socket connection;
+    private Socket socket;
 
 
     CoolestServer(Socket connection) {
-        this.connection = connection;
+        this.socket = connection;
     }
 
 
@@ -40,6 +48,8 @@ public class CoolestServer {
                 System.out.println("Running...");
                 CoolestServer server = new CoolestServer(socket.accept());
 
+                System.out.println("Sochet hashcode : " + socket.hashCode());
+
                 server.run();
 
             }
@@ -51,54 +61,26 @@ public class CoolestServer {
 
     public void run() {
 
+
         FileInputStream fileInput = null;
         byte[] fileData = null;
         long length = 0;
         try (
-                BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-                PrintWriter out = new PrintWriter(connection.getOutputStream());
-                BufferedOutputStream outputStream = new BufferedOutputStream(connection.getOutputStream())) {
-
-            String input = in.readLine();
-            System.out.println("Input " + input);
-            StringTokenizer tokenizer = new StringTokenizer(input);
-
-            String method = tokenizer.nextToken();
-            String reuqestPath = tokenizer.nextToken();
-            String protocol = tokenizer.nextToken();
-
-            if (method.equals("GET")) {
-                System.out.println("Inside GET..");
-                File index = new File("content/miffy.png");
-
-                fileData = Files.readAllBytes(index.toPath());
-                length = index.length();
-
-                System.out.println("File length: " + length);
-                fileInput = new FileInputStream(index);
-
-                outputStream.flush();
+                BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+                PrintWriter out = new PrintWriter(socket.getOutputStream());
+                BufferedOutputStream outputStream = new BufferedOutputStream(socket.getOutputStream())) {
 
 
-                System.out.println("Writing...");
-            }
+            List<String> lines = new ArrayList<>();
 
-            String response = "Yo yo";
+            lines.add(in.readLine());
+            lines.add(in.readLine());
+            lines.add(in.readLine());
 
-            out.println("HTTP/1.1 200 OK");
-            out.println("Server: Java Cool Server");
-            out.println("Date: " + new Date());
-            out.println("Content-length: " + length);
-            //out.println("Content-type: " + "image/png");
+            HTTPRequest request = new HTTPRequest(lines);
 
-            out.println("Content-Type: application/octet-stream");
-            out.println("Content-Disposition: attachment; filename=miffy.png");
-            out.println();
-
-            out.flush();
-            outputStream.write(fileData);
-
-            System.out.println("Completed.!");
+            HTTPMethod method1 = HTTPRequestResolverFactory.resolveMethod(request, this.socket);
+            method1.execute();
 
         } catch (IOException e) {
 
@@ -110,6 +92,8 @@ public class CoolestServer {
                     e1.printStackTrace();
                 }
             }
+        } catch (MethodNotSupportedException e) {
+            e.printStackTrace();
         }
         System.out.println("exiting..");
 
