@@ -24,6 +24,7 @@ public class HTTPRequest {
 
         for (int i=0; i<inputBytes.length; i++) {
             char c = (char) inputBytes[i];
+            System.out.println((char) inputBytes[i] + " Byte code : " + inputBytes[i]);
             if (c == '\n') {
                 newLine = true;
                 headerInput.add(buffer.toString());
@@ -40,6 +41,10 @@ public class HTTPRequest {
         headerInput.forEach(System.out::println);
 
         this.bytes = Arrays.copyOfRange(inputBytes, endOfHeaders + 2, inputBytes.length);
+
+        for (int i=0; i< this.bytes.length; i++) {
+            System.out.println((char) this.bytes[i] + " Byte code : " + this.bytes[i]);
+        }
 
         if (headerInput.isEmpty()) {
             System.out.println("Naughty Keep alive detected!!");

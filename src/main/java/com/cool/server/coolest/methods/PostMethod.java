@@ -55,6 +55,10 @@ public class PostMethod implements HTTPMethod {
             filePath = filePathPlaceholder.replace("#", String.valueOf(random));
         }
 
+        // TODO- revert
+        // To test synch
+        filePath = "content/new.jpg";
+
         try (BufferedOutputStream writer = new BufferedOutputStream(new FileOutputStream(filePath))) {
             writer.write(request.getBytes());
             writer.flush();
@@ -63,6 +67,7 @@ public class PostMethod implements HTTPMethod {
             e.printStackTrace();
         }
 
+        System.out.println("Writing to post data complete..");
         return 0;
     }
 

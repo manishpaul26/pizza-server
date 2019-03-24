@@ -28,6 +28,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ThreadPoolExecutor;
 
 public class CoolestServer implements Runnable {
 
@@ -55,6 +57,8 @@ public class CoolestServer implements Runnable {
             BufferedReader in;
             PrintWriter out;
             BufferedOutputStream outputStream;
+            ThreadPoolExecutor executor =
+                    (ThreadPoolExecutor) Executors.newFixedThreadPool(1);
 
             while (true) {
                 System.out.println("Running...");
@@ -62,13 +66,16 @@ public class CoolestServer implements Runnable {
                 Socket newConnection = socket.accept();
 
                 CoolestServer server = new CoolestServer(newConnection);
-                CoolestServer.threadCount++;
-                Thread t = new Thread(server);
-                System.out.println("Thread number " + CoolestServer.threadCount + " is on its way!");
-                t.run();
+                executor.execute(server);
+
+                System.out.println("Current active threads : " + executor.getActiveCount());
+                //CoolestServer.threadCount++;
+                //Thread t = new Thread(server);
+                //System.out.println("Thread number " + CoolestServer.threadCount + " is on its way!");
+                //t.run();
 
                 //TODO Doubtful
-                newConnection.close();
+                //newConnection.close();
 
             }
         } catch (IOException e) {
@@ -87,8 +94,6 @@ public class CoolestServer implements Runnable {
                 BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
                 PrintWriter out = new PrintWriter(socket.getOutputStream());
                 BufferedOutputStream outputStream = new BufferedOutputStream(socket.getOutputStream())) {
-
-            System.out.println("Aage badho...............");
 
             HTTPRequest request = new HTTPRequest(socket);
 
