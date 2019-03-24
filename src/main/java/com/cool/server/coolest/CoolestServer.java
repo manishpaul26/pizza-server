@@ -29,9 +29,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-public class CoolestServer {
+public class CoolestServer implements Runnable {
 
     public static final int PORT = 4444;
+
+    public static int threadCount;
 
     private Socket socket;
 
@@ -46,7 +48,7 @@ public class CoolestServer {
 
     public static void main(String args[]) {
 
-        try (ServerSocket socket = new ServerSocket(PORT)) {
+        try (final ServerSocket socket = new ServerSocket(PORT)) {
 
             System.out.println("Starting server on port.. " + socket.getLocalPort());
 
@@ -56,9 +58,17 @@ public class CoolestServer {
 
             while (true) {
                 System.out.println("Running...");
-                CoolestServer server = new CoolestServer(socket.accept());
 
-                server.run();
+                Socket newConnection = socket.accept();
+
+                CoolestServer server = new CoolestServer(newConnection);
+                CoolestServer.threadCount++;
+                Thread t = new Thread(server);
+                System.out.println("Thread number " + CoolestServer.threadCount + " is on its way!");
+                t.run();
+
+                //TODO Doubtful
+                newConnection.close();
 
             }
         } catch (IOException e) {

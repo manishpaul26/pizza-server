@@ -25,24 +25,24 @@ public class HTTPHeader {
     * * Request: Accept-Encoding: gzip, deflate, br
     * Request: Accept-Language: en-US,en;q=0.9
     * Request: Cookie:
-     * @param inputReader
+     * @param headerList
      */
-    public HTTPHeader(List<String> inputReader) {
-        StringTokenizer tokenizer = new StringTokenizer(inputReader.get(0));
+    public HTTPHeader(List<String> headerList) {
+        StringTokenizer tokenizer = new StringTokenizer(headerList.get(0));
         this.method = tokenizer.nextToken();
         this.requestPath = tokenizer.nextToken();
         this.protocol = tokenizer.nextToken();
 
-        tokenizer = new StringTokenizer(inputReader.get(1));
+        tokenizer = new StringTokenizer(headerList.get(1));
         tokenizer.nextToken();
         this.serverName = tokenizer.nextToken();
 
-        tokenizer = new StringTokenizer(inputReader.get(2));
+        tokenizer = new StringTokenizer(headerList.get(2));
         tokenizer.nextToken();
         this.connection = tokenizer.nextToken();
 
-        if (inputReader.get(4).contains("length")) {
-            tokenizer = new StringTokenizer(inputReader.get(4));
+        if (headerList.size() > 4 && headerList.get(4).contains("length")) {
+            tokenizer = new StringTokenizer(headerList.get(4));
             tokenizer.nextToken();
             this.contentLength = Long.valueOf(tokenizer.nextToken());
         } else {
