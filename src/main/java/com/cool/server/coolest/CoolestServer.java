@@ -58,8 +58,6 @@ public class CoolestServer {
                 System.out.println("Running...");
                 CoolestServer server = new CoolestServer(socket.accept());
 
-                System.out.println("Socket hashcode : " + socket.hashCode());
-
                 server.run();
 
             }
@@ -80,42 +78,9 @@ public class CoolestServer {
                 PrintWriter out = new PrintWriter(socket.getOutputStream());
                 BufferedOutputStream outputStream = new BufferedOutputStream(socket.getOutputStream())) {
 
-
-            List<String> lines = new ArrayList<>();
-
-            byte [] inputBytes = new byte[10000];
-            socket.getInputStream().read(inputBytes);
-            
-            StringBuffer buffer = new StringBuffer();
-
-            boolean newLine = false;
-            int endOfHeaders = 0;
-
-            for (int i=0; i<inputBytes.length; i++) {
-                char c = (char) inputBytes[i];
-                if (c == '\n') {
-                    newLine = true;
-                    lines.add(buffer.toString());
-                } else if (( (int) c == 13 && newLine)) {
-                    System.out.println("............. Detected end of headers............ i : " + i);
-                    endOfHeaders =  i;
-                    break;
-                } else {
-                    newLine = false;
-                    buffer.append(c);
-                }
-            }
-
-            byte [] binary = Arrays.copyOfRange(inputBytes, endOfHeaders + 2, inputBytes.length);
-
-            BufferedOutputStream writer = new BufferedOutputStream(new FileOutputStream("content/new.jpg"));
-            writer.write(binary);
-            writer.flush();
-            writer.close();
-
             System.out.println("Aage badho...............");
 
-            HTTPRequest request = new HTTPRequest(lines);
+            HTTPRequest request = new HTTPRequest(socket);
 
             HTTPMethod method = HTTPRequestResolverFactory.resolveMethod(request, this.socket);
             method.execute();

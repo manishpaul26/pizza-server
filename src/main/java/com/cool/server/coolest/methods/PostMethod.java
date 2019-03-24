@@ -5,9 +5,16 @@ import com.cool.server.coolest.HTTPRequest;
 import com.cool.server.coolest.HTTPResponse;
 import com.cool.server.coolest.Servlet;
 
+import java.io.BufferedOutputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.net.Socket;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.Random;
 
 public class PostMethod implements HTTPMethod {
 
@@ -39,6 +46,23 @@ public class PostMethod implements HTTPMethod {
         } catch (InstantiationException e) {
             e.printStackTrace();
         }
+
+        String filePath = "content/new.jpg";
+        String filePathPlaceholder = "content/new-#.jpg";
+        Path path = Paths.get(filePath);
+        if (Files.exists(path)) {
+            int random = new Random().nextInt((10 - 1) + 1) + 1;
+            filePath = filePathPlaceholder.replace("#", String.valueOf(random));
+        }
+
+        try (BufferedOutputStream writer = new BufferedOutputStream(new FileOutputStream(filePath))) {
+            writer.write(request.getBytes());
+            writer.flush();
+            writer.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
         return 0;
     }
 
