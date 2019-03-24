@@ -1,6 +1,7 @@
 package com.cool.server.coolest;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.Socket;
@@ -12,22 +13,22 @@ import java.util.List;
 public class HTTPRequest {
 
     private final HTTPHeader headers;
-    private final byte[] bytes;
+    private byte[] bytes;
 
     public HTTPRequest(Socket socket) throws IOException {
 
         List<String> headerInput = new ArrayList<>();
 
-        ByteBuffer byteBuffer = ByteBuffer.allocate(48);
         byte [] inputBytes = new byte[100];
 
-
         InputStream inputStream = socket.getInputStream();
-        int offset = 0, length = 100, availableBytes = inputStream.available(), bytesLeft = inputStream.available();
+        int length = 100, bytesLeft = inputStream.available();
 
         StringBuffer buffer = new StringBuffer();
-        boolean newLine = false;
-        int endOfHeaders = 0;
+        int endOfHeaders = 0, currentIndex;
+        byte[] pendingBytes = new byte[100]; // because headers could end anywhere and then the bytes already read will have to be saved.
+
+        ByteArrayOutputStream arrayOutputStream = new ByteArrayOutputStream();
 
         while(bytesLeft > 0) {
             inputStream.read(inputBytes, 0, length);
@@ -36,15 +37,16 @@ public class HTTPRequest {
                 char c = (char) inputBytes[i];
                 System.out.println((char) inputBytes[i] + " Reading Byte code : " + inputBytes[i]);
                 if (c == '\n') {
-                    newLine = true;
                     headerInput.add(buffer.toString());
                 } else if (( inputBytes[i] == -1)) {
                     System.out.println("............. Detected end of headers............ i : " + i);
                     endOfHeaders =  i;
+                    System.out.println("Last detected bytes " + inputBytes[i]);
+                    pendingBytes = Arrays.copyOfRange(inputBytes, i, inputBytes.length);
+                    arrayOutputStream.write(pendingBytes);
                     break;
                 } else {
                     // Valid character. Add it to the string buffer.
-                    newLine = false;
                     buffer.append(c);
                 }
             }
@@ -55,21 +57,46 @@ public class HTTPRequest {
             }
 
             bytesLeft = inputStream.available() < length ? inputStream.available() : length;
-            System.out.println("Bytes left : " + bytesLeft);
-            System.out.println("Bytes completed : " + (availableBytes - inputStream.available()) + " out of total : " + availableBytes);
-
         }
 
+        System.out.println("Current available bytes : " + inputStream.available());
 
-        this.bytes = new byte[inputStream.available()];
 
-        //this.bytes = Arrays.copyOfRange(inputBytes, endOfHeaders, inputBytes.length);
-        inputStream.read(this.bytes);
+
+        int index = 0;
+        while(inputStream.available() > 0) {
+            byte b = (byte) inputStream.read();
+            arrayOutputStream.write(b);
+            index++;
+        }
+
+        byte[] maybe = arrayOutputStream.toByteArray();
+
+        System.out.println("Saved " + index + "bytes.");
+        System.out.println("Maybe this size is " + maybe.length);
+
+
+        File f = new File("content/IMG_0030.jpg");
+
+//2592338
+        this.bytes = arrayOutputStream.toByteArray();
+//        this.bytes = new byte[pendingBytes.length + arrayOutputStream.toByteArray().length];
+  //      this.bytes = Arrays.copyOfRange(pendingBytes, 0, pendingBytes.length);
+    //    this.bytes = Arrays.copyOfRange(arrayOutputStream.toByteArray(), pendingBytes.length + 1, arrayOutputStream.toByteArray().length);
+
+        System.out.println("Corrected new size : " + this.bytes.length);
+        System.out.println("Correct size should be : 2592338");
+
+        System.out.println("File exists? : + " + f.exists() + " FIle lengt!!! " + f.length());
 
         headerInput.forEach(System.out::println);
 
 
-        for (int i=0; i< this.bytes.length; i++) {
+        for (int i=0; i< pendingBytes.length; i++) {
+            //System.out.println((char) pendingBytes[i] + " Pending Byte code : " + this.bytes[i]);
+        }
+
+        for (int i=0; i< 100; i++) {
             //System.out.println((char) this.bytes[i] + " Byte code : " + this.bytes[i]);
         }
 
