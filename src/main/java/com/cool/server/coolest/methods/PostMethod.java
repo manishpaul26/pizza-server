@@ -60,9 +60,9 @@ public class PostMethod implements HTTPMethod {
         filePath = "content/new.jpg";
 
         try (BufferedOutputStream writer = new BufferedOutputStream(new FileOutputStream(filePath))) {
+            System.out.println("Size of bytes : " + request.getBytes().length);
             writer.write(request.getBytes());
             writer.flush();
-            writer.close();
         } catch (IOException e) {
             e.printStackTrace();
         }

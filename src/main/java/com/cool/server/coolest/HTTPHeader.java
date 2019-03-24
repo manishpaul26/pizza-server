@@ -51,6 +51,15 @@ public class HTTPHeader {
 
     }
 
+    public HTTPHeader() {
+        this.method = "GET";
+        this.requestPath = "/";
+        this.protocol = "";
+        this.serverName = "";
+        this.connection = "";
+        this.contentLength = 0L;
+    }
+
 
     public String getMethod() {
         return method;
