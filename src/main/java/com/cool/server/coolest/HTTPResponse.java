@@ -27,7 +27,7 @@ public class HTTPResponse {
         this.setContentType(file.getName());
         this.setContentDisposition("");
 
-        System.out.println(this);
+        System.out.println(Thread.currentThread().getId() + " : " + Thread.currentThread().getName() + " : " + this);
 
     }
 

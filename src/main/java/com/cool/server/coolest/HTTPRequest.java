@@ -36,7 +36,7 @@ public class HTTPRequest {
                 if (c == '\n') {
                     headerInput.add(buffer.toString());
                 } else if (( inputBytes[i] == -1)) {
-                    System.out.println("............. Detected end of headers............ i : " + i);
+                    System.out.println(Thread.currentThread().getId() + " : " + Thread.currentThread().getName() + " : " + " ............. Detected end of headers............ i : " + i);
                     endOfHeaders =  i;
                     //pending bytes
                     arrayOutputStream.write(Arrays.copyOfRange(inputBytes, i, inputBytes.length));
@@ -63,12 +63,16 @@ public class HTTPRequest {
         }
 
         this.bytes = arrayOutputStream.toByteArray();
-        System.out.println("********** Headers start **********");
-        headerInput.forEach(s -> System.out.println("\t" + s));
-        System.out.println("********** Headers end **********");
+
+        // Disabling write
+        if (false) {
+            System.out.println(Thread.currentThread().getId() + " : " + Thread.currentThread().getName() + " : " + " ********** Headers start **********");
+            headerInput.forEach(s -> System.out.println("\t" + s));
+            System.out.println(Thread.currentThread().getId() + " : " + Thread.currentThread().getName() + " : " + " ********** Headers end **********");
+        }
 
         if (headerInput.isEmpty()) {
-            System.out.println("Naughty Keep alive detected!!");
+            System.out.println(Thread.currentThread().getId() + " : " + Thread.currentThread().getName() + " : " + " Naughty Keep alive detected!!");
             this.headers = new HTTPHeader();
         } else {
             this.headers = new HTTPHeader(headerInput);

@@ -2,11 +2,13 @@ package com.cool.server.coolest.methods;
 
 import com.cool.server.coolest.ContentTypes;
 import com.cool.server.coolest.CoolestServer;
+import com.cool.server.coolest.FileIO;
 import com.cool.server.coolest.HTTPRequest;
 import com.cool.server.coolest.HTTPResponse;
 import com.cool.server.coolest.Servlet;
 
 import java.io.BufferedOutputStream;
+import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -18,6 +20,9 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Date;
 import java.util.Random;
+
+import static com.cool.server.coolest.methods.StatusCodes.SC_INTERNAL_SERVER_ERROR;
+import static com.cool.server.coolest.methods.StatusCodes.SC_OK;
 
 public class PostMethod implements HTTPMethod {
 
@@ -58,37 +63,50 @@ public class PostMethod implements HTTPMethod {
             filePath = filePathPlaceholder.replace("#", String.valueOf(random));
         }
 
+
+
         // TODO- revert
         // To test synch
         filePath = "content/new.jpg";
+
+        File file = new File(filePath);
+
 
         try (BufferedOutputStream writer = new BufferedOutputStream(new FileOutputStream(filePath));
              BufferedOutputStream outputStream = new BufferedOutputStream(socket.getOutputStream());
              PrintWriter out = new PrintWriter(socket.getOutputStream())) {
 
-            final String success = "SUCCESS";
 
-            out.println("HTTP/1.1 200 OK");
+            boolean status = FileIO.write(filePath, writer, request.getBytes());
+
+            final String statusCode = status ?  "SUCCESS" : "FAILED";
+
+            String statusCodeString = status ? SC_OK : SC_INTERNAL_SERVER_ERROR;
+
+            out.println("HTTP/1.1 " + statusCodeString);
             out.println("Server: Java Cool Server");
             out.println("Date: " + new Date());
-            out.println("Content-length: " + success.getBytes().length);
+            out.println("Content-length: " + statusCode.getBytes().length);
 
             out.println("Content-type: " + ContentTypes.TEXT_HTML);
             out.println();
             out.flush();
 
-            outputStream.write(success.getBytes());
+            outputStream.write(statusCode.getBytes());
             outputStream.flush();
 
 
-            System.out.println("Size of bytes : " + request.getBytes().length);
-            writer.write(request.getBytes());
-            writer.flush();
+            System.out.println(Thread.currentThread().getId() + " : " + Thread.currentThread().getName() + " : " + " Size of bytes : " + request.getBytes().length);
+
+
+
+            //writer.write(request.getBytes());
+            //writer.flush();
         } catch (IOException e) {
             e.printStackTrace();
         }
 
-        System.out.println("Writing to post data complete..");
+        System.out.println(Thread.currentThread().getId() + " : " + Thread.currentThread().getName() + " : " + " Writing to post data complete..");
         return 0;
     }
 

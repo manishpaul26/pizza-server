@@ -39,9 +39,9 @@ public class GetMethod implements HTTPMethod {
             PrintWriter out = new PrintWriter(socket.getOutputStream());
             BufferedOutputStream outputStream = new BufferedOutputStream(socket.getOutputStream())) {
 
-            System.out.println("I am inside GETTTTT");
+            System.out.println(Thread.currentThread().getId() + " : " + Thread.currentThread().getName() + " : " + " I am inside GETTTTT");
 
-            System.out.println("Socket hashcode : " + socket.hashCode());
+            System.out.println(Thread.currentThread().getId() + " : " + Thread.currentThread().getName() + " : " + " Socket hashcode : " + socket.hashCode());
 
             final String resourcePath = CONTENT_PATH + request.getRequestPath();
 
@@ -66,7 +66,7 @@ public class GetMethod implements HTTPMethod {
             } else {
                 //FileInputStream fileInput = new FileInputStream(file);
 
-                System.out.println("Sending...");
+                System.out.println(Thread.currentThread().getId() + " : " + Thread.currentThread().getName() + " : " + " Sending...");
 
                 String contentDisposition = "Content-Disposition: attachment; filename=miffy.png";
 
@@ -78,13 +78,13 @@ public class GetMethod implements HTTPMethod {
 
             }
 
-            System.out.println("Completed.!");
+            System.out.println(Thread.currentThread().getId() + " : " + Thread.currentThread().getName() + " : " + " Completed.!");
         } catch(IOException e) {
             e.printStackTrace();
 
         } finally {
             try {
-                System.out.println("Closing socket..");
+                System.out.println(Thread.currentThread().getId() + " : " + Thread.currentThread().getName() + " : " + " Closing socket..");
                 socket.close();
             } catch (IOException e) {
                 e.printStackTrace();

@@ -6,7 +6,7 @@ import com.cool.server.coolest.annotations.ChocoServlet;
 public class Servlet {
 
     public void doPost(HTTPRequest request, HTTPResponse response) {
-        System.out.println("UNBELIEVABLE!!!" + request.getMethod());
+        System.out.println(Thread.currentThread().getId() + " : " + Thread.currentThread().getName() + " : " + " POST Servlet");
     }
 
 }
