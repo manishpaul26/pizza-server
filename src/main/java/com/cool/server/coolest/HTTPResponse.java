@@ -8,9 +8,7 @@ import java.nio.file.Files;
 import java.util.Arrays;
 import java.util.Date;
 
-import static com.cool.server.coolest.ContentTypes.IMAGE_JPEG;
-import static com.cool.server.coolest.ContentTypes.IMAGE_PNG;
-import static com.cool.server.coolest.ContentTypes.TEXT_HTML;
+import static com.cool.server.coolest.ContentTypes.*;
 
 public class HTTPResponse {
 
@@ -51,6 +49,8 @@ public class HTTPResponse {
             this.contentType = IMAGE_JPEG;
         } else if (fileName.endsWith(".mp4")) {
             this.contentType = "";
+        } else if (fileName.endsWith(".ico")) {
+            this.contentType = IMAGE_ICON;
         } else {
             this.contentType = TEXT_HTML;
         }

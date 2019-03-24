@@ -8,6 +8,8 @@ public class ContentTypes {
 
     public static final String IMAGE_JPEG = "image/jpeg";
 
+    public static final String IMAGE_ICON = "image/x-icon";
+
     public static final String APPLICATION_OCTET_STREAM = "application/octet-stream";
 
 

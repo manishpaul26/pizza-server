@@ -1,5 +1,6 @@
 package com.cool.server.coolest.methods;
 
+import com.cool.server.coolest.ContentTypes;
 import com.cool.server.coolest.CoolestServer;
 import com.cool.server.coolest.HTTPRequest;
 import com.cool.server.coolest.HTTPResponse;
@@ -8,12 +9,14 @@ import com.cool.server.coolest.Servlet;
 import java.io.BufferedOutputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.net.Socket;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Date;
 import java.util.Random;
 
 public class PostMethod implements HTTPMethod {
@@ -59,7 +62,25 @@ public class PostMethod implements HTTPMethod {
         // To test synch
         filePath = "content/new.jpg";
 
-        try (BufferedOutputStream writer = new BufferedOutputStream(new FileOutputStream(filePath))) {
+        try (BufferedOutputStream writer = new BufferedOutputStream(new FileOutputStream(filePath));
+             BufferedOutputStream outputStream = new BufferedOutputStream(socket.getOutputStream());
+             PrintWriter out = new PrintWriter(socket.getOutputStream())) {
+
+            final String success = "SUCCESS";
+
+            out.println("HTTP/1.1 200 OK");
+            out.println("Server: Java Cool Server");
+            out.println("Date: " + new Date());
+            out.println("Content-length: " + success.getBytes().length);
+
+            out.println("Content-type: " + ContentTypes.TEXT_HTML);
+            out.println();
+            out.flush();
+
+            outputStream.write(success.getBytes());
+            outputStream.flush();
+
+
             System.out.println("Size of bytes : " + request.getBytes().length);
             writer.write(request.getBytes());
             writer.flush();

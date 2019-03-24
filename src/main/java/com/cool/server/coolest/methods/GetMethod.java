@@ -78,12 +78,6 @@ public class GetMethod implements HTTPMethod {
 
             }
 
-
-            Annotation[] a = GetMethod.class.getAnnotations();
-
-
-
-
             System.out.println("Completed.!");
         } catch(IOException e) {
             e.printStackTrace();
