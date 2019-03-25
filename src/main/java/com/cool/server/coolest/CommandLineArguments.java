@@ -19,6 +19,8 @@ public class CommandLineArguments {
 
     private boolean verbose;
 
+    private int port = 4444;
+
     private Integer socketTimeOut = SocketOptions.SO_TIMEOUT;
 
     public static CommandLineArguments getCommandLineArgument(String[] args) {
@@ -49,6 +51,8 @@ public class CommandLineArguments {
                 this.socketTimeOut = getInteger(arg, SocketOptions.SO_TIMEOUT);
             } else if (StringUtils.containsIgnoreCase(arg,"verbose")) {
                 this.verbose = getValue(arg, false);
+            } else if (StringUtils.containsIgnoreCase(arg,"port")) {
+                this.port = getInteger(arg, 4444);
             }
         }
 
@@ -106,7 +110,13 @@ public class CommandLineArguments {
                 ", poolSize=" + poolSize +
                 ", maxPoolSize=" + maxPoolSize +
                 ", writeToSameFile=" + writeToSameFile +
+                ", verbose=" + verbose +
+                ", port=" + port +
                 ", socketTimeOut=" + socketTimeOut +
                 '}';
+    }
+
+    public int getPort() {
+        return port;
     }
 }

@@ -52,7 +52,7 @@ public class CoolestServer implements Runnable {
             ThreadPoolExecutor executor =  ThreadFactory.getThreadPoolExecutor(arguments);
 
             while (true) {
-                System.out.println("Running...");
+                System.out.println("Waiting for incoming connection..");
 
                 Socket newConnection = serverSocket.accept();
                 newConnection.setKeepAlive(true);
@@ -62,8 +62,10 @@ public class CoolestServer implements Runnable {
 
                 executor.execute(server);
                 BlockingQueue<Runnable> queue = executor.getQueue();
-                System.out.println("Number of threads in the queue : " + queue.size());
-                queue.forEach(runnable -> System.out.println("In the queue : " + runnable.toString()));
+                if (arguments.isVerbose()) {
+                    System.out.println("Number of threads in the queue : " + queue.size());
+                    queue.forEach(runnable -> System.out.println("In the queue : " + runnable.toString()));
+                }
 
                 System.out.println("Current pool size : " + executor.getPoolSize());
                 System.out.println("Current active threads : " + executor.getActiveCount());

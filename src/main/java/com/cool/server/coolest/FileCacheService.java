@@ -28,7 +28,7 @@ public class FileCacheService {
 
     public byte[] getCacheMiffy() {
         if (cachedFiles.containsKey(MIFFY)) {
-            System.out.println(Thread.currentThread().getId() + " : " + Thread.currentThread().getName() + " : " + "MIFYYYY IS CACHHEDDDDD");
+            System.out.println(Thread.currentThread().getId() + " : " + Thread.currentThread().getName() + " : " + " MIFFY Image is Cached!");
             return cachedFiles.get(MIFFY);
         } else {
             try {

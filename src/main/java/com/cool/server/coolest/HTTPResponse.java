@@ -99,7 +99,7 @@ public class HTTPResponse {
 
     @Override
     public String toString() {
-        return "HTTPResponse{" +
+        return " HTTPResponse{" +
                 "contentType='" + contentType + '\'' +
                 ", contentLength=" + contentLength +
                 ", responseCode=" + responseCode +

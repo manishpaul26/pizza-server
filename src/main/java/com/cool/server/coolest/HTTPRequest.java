@@ -21,6 +21,8 @@ public class HTTPRequest {
 
         byte [] inputBytes = new byte[100];
 
+        boolean verbose = CommandLineArguments.getCommandLineArgument(null).isVerbose();
+
         InputStream inputStream = socket.getInputStream();
         int length = 100, bytesLeft = inputStream.available();
 
@@ -36,7 +38,9 @@ public class HTTPRequest {
                 if (c == '\n') {
                     headerInput.add(buffer.toString());
                 } else if (( inputBytes[i] == -1)) {
-                    System.out.println(Thread.currentThread().getId() + " : " + Thread.currentThread().getName() + " : " + " ............. Detected end of headers............ i : " + i);
+                    if (verbose) {
+                        System.out.println(Thread.currentThread().getId() + " : " + Thread.currentThread().getName() + " : " + " ............. Detected end of headers............ i : " + i);
+                    }
                     endOfHeaders =  i;
                     //pending bytes
                     arrayOutputStream.write(Arrays.copyOfRange(inputBytes, i, inputBytes.length));
@@ -64,7 +68,6 @@ public class HTTPRequest {
 
         this.bytes = arrayOutputStream.toByteArray();
 
-        boolean verbose = CommandLineArguments.getCommandLineArgument(null).isVerbose();
         // Disabling write
         if (verbose) {
             System.out.println(Thread.currentThread().getId() + " : " + Thread.currentThread().getName() + " : " + " ********** Headers start **********");
