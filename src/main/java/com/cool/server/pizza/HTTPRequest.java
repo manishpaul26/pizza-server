@@ -35,6 +35,7 @@ public class HTTPRequest {
                 char c = (char) inputBytes[i];
                 if (c == '\n') {
                     headerInput.add(buffer.toString());
+                    buffer.delete(0, buffer.length());
                 } else if (( inputBytes[i] == -1)) {
                     if (verbose) {
                         System.out.println(Thread.currentThread().getId() + " : " + Thread.currentThread().getName() + " : " + " ............. Detected end of headers............ i : " + i);

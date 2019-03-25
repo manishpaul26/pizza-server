@@ -58,12 +58,12 @@ public class PostMethod implements HTTPMethod {
 
         String filePath = "content/new.jpg";
         ContentDisposition contentDisposition = request.getHeaders().getContentDisposition();
-        String requestFileName = contentDisposition != null ? contentDisposition.getName() : filePath;
+        String requestFileName = contentDisposition != null ? contentDisposition.getFileName() : filePath;
 
         CommandLineArguments arguments = CommandLineArguments.getCommandLineArgument(null);
-        String fileName =  arguments.isWriteToSameFile() ? filePath : requestFileName;
+        String fileName =  arguments.isWriteToSameFile() ? "content/new.jpg" : "content/" + requestFileName;
 
-        try (BufferedOutputStream writer = new BufferedOutputStream(new FileOutputStream(filePath));
+        try (BufferedOutputStream writer = new BufferedOutputStream(new FileOutputStream(fileName));
              BufferedOutputStream outputStream = new BufferedOutputStream(socket.getOutputStream());
              PrintWriter out = new PrintWriter(socket.getOutputStream())) {
 

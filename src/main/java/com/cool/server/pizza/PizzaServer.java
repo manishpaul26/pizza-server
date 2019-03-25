@@ -33,7 +33,7 @@ public class PizzaServer implements Runnable {
 
 
     /**
-     * -DpoolSize=5 -DmaxPoolSize=10 -DqueueSize=100 -DsocketTimeOut=4000 -DwriteToSameFile=true -Dverbose=false
+     * -DpoolSize=8 -DmaxPoolSize=20 -DqueueSize=200 -DsocketTimeOut=4000 -DwriteToSameFile=true -Dverbose=false
      * @param args
      */
 

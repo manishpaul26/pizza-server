@@ -15,7 +15,7 @@ public class ContentDisposition {
         tokenizer.nextToken();
         this.type = tokenizer.nextToken();
         this.name = tokenizer.nextToken();
-        this.fileName = tokenizer.nextToken();
+        this.fileName = tokenizer.nextToken().replaceAll("\"","").split("=")[1];
     }
 
     public String getType() {
