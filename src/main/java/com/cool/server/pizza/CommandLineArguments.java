@@ -12,12 +12,12 @@ public class CommandLineArguments {
     private static CommandLineArguments instance;
 
     private int queueSize = 200;
-    private Integer poolSize;
-    private Integer maxPoolSize;
+    private Integer poolSize = 8;
+    private Integer maxPoolSize = 20;
 
-    private boolean writeToSameFile;
+    private boolean writeToSameFile = false;
 
-    private boolean verbose;
+    private boolean verbose = false;
 
     private int port = 4444;
 
