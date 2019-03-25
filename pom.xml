@@ -3,11 +3,11 @@
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>com.cool.server</groupId>
-  <artifactId>coolest</artifactId>
+  <artifactId>pizza</artifactId>
   <version>0.0.1-SNAPSHOT</version>
   <packaging>jar</packaging>
 
-  <name>coolest</name>
+  <name>pizza</name>
   <url>http://maven.apache.org</url>
 
   <properties>
@@ -48,6 +48,25 @@
           <target>1.8</target>
         </configuration>
       </plugin>
+        <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-jar-plugin</artifactId>
+            <configuration>
+                <archive>
+                    <manifest>
+                        <mainClass>com.cool.server.pizza.PizzaServer</mainClass>
+                    </manifest>
+                </archive>
+            </configuration>
+        </plugin>
+        <plugin>
+            <groupId>org.codehaus.mojo</groupId>
+            <artifactId>exec-maven-plugin</artifactId>
+            <version>1.6.0</version>
+            <configuration>
+                <mainClass>com.myorganisationname.common.App</mainClass>
+            </configuration>
+        </plugin>
     </plugins>
   </build>
 

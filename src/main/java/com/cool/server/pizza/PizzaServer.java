@@ -41,9 +41,10 @@ public class PizzaServer implements Runnable {
 
         CommandLineArguments arguments = CommandLineArguments.getCommandLineArgument(args);
 
-        try (final ServerSocket serverSocket = new ServerSocket(PORT)) {
+        try (final ServerSocket serverSocket = new ServerSocket(arguments.getPort())) {
 
             System.out.println("Starting Pizza server on port.. " + serverSocket.getLocalPort());
+            System.out.println("Please hit localhost:"+ arguments.getPort());
 
             ThreadPoolExecutor executor =  ThreadFactory.getThreadPoolExecutor(arguments);
 
