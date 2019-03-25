@@ -10,6 +10,8 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.net.SocketException;
+import java.net.SocketOptions;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -43,10 +45,9 @@ public class CoolestServer implements Runnable {
 
         CommandLineArguments arguments = new CommandLineArguments(args);
 
-        try (final ServerSocket socket = new ServerSocket(PORT)) {
+        try (final ServerSocket serverSocket = new ServerSocket(PORT)) {
 
-            System.out.println("Starting server on port.. " + socket.getLocalPort());
-
+            System.out.println("Starting server on port.. " + serverSocket.getLocalPort());
             //ThreadPoolExecutor executor =
               //      (ThreadPoolExecutor) Executors.newFixedThreadPool(3);
 
@@ -55,7 +56,8 @@ public class CoolestServer implements Runnable {
             while (true) {
                 System.out.println("Running...");
 
-                Socket newConnection = socket.accept();
+                Socket newConnection = serverSocket.accept();
+                newConnection.setKeepAlive(true);
 
                 CoolestServer server = new CoolestServer(newConnection);
 
@@ -66,13 +68,6 @@ public class CoolestServer implements Runnable {
 
                 System.out.println("Current pool size : " + executor.getPoolSize());
                 System.out.println("Current active threads : " + executor.getActiveCount());
-                //CoolestServer.threadCount++;
-                //Thread t = new Thread(server);
-                //System.out.println("Thread number " + CoolestServer.threadCount + " is on its way!");
-                //t.run();
-
-                //TODO Doubtful
-                //newConnection.close();
 
             }
         } catch (IOException e) {
@@ -105,6 +100,16 @@ public class CoolestServer implements Runnable {
         } catch (MethodNotSupportedException e) {
             e.printStackTrace();
         }
+
+        try {
+            socket.setKeepAlive(true);
+            System.out.println(Thread.currentThread().getId() + " : " + Thread.currentThread().getName() + " : " + "Is Socket closed? : " + socket.isClosed()
+                    + " Is input shutdown? : " + socket.isInputShutdown()
+                    + " Is connected? : " + socket.isConnected());
+        } catch (SocketException e) {
+            e.printStackTrace();
+        }
+
         System.out.println(Thread.currentThread().getId() + " : " + Thread.currentThread().getName() + " : " + " exiting..");
 
     }

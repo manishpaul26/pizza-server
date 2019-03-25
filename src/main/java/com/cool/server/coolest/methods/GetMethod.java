@@ -3,6 +3,7 @@ package com.cool.server.coolest.methods;
 import com.cool.server.coolest.ContentTypes;
 import com.cool.server.coolest.HTTPRequest;
 import com.cool.server.coolest.HTTPResponse;
+import com.cool.server.coolest.NotFoundResponse;
 
 import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
@@ -46,25 +47,16 @@ public class GetMethod implements HTTPMethod {
             final String resourcePath = CONTENT_PATH + request.getRequestPath();
 
             File file = new File(resourcePath);
-            byte[] fileData;
-            long length;
 
             if (!file.exists()) {
-                //throw new MissingFileException();
-
                 file = new File(NOT_FOUND);
-                length = file.length();
-                fileData = Files.readAllBytes(file.toPath());
 
-                out.println("HTTP/1.1 404 Not Found");
-                out.println("Server: Java Cool Server");
-                out.println("Date: " + new Date());
-                out.println("Content-length: " + length);
+                HTTPResponse response = new NotFoundResponse(file);
 
-                out.println("Content-type: " + ContentTypes.TEXT_HTML);
+                response.writeHeaders(out);
+                response.writeContent(outputStream);
 
             } else {
-                //FileInputStream fileInput = new FileInputStream(file);
 
                 System.out.println(Thread.currentThread().getId() + " : " + Thread.currentThread().getName() + " : " + " Sending...");
 
@@ -78,17 +70,17 @@ public class GetMethod implements HTTPMethod {
 
             }
 
-            System.out.println(Thread.currentThread().getId() + " : " + Thread.currentThread().getName() + " : " + " Completed.!");
+            System.out.println(Thread.currentThread().getId() + " : " + Thread.currentThread().getName() + " : " + " Completed request for : " + resourcePath);
         } catch(IOException e) {
             e.printStackTrace();
 
         } finally {
-            try {
+/*            try {
                 System.out.println(Thread.currentThread().getId() + " : " + Thread.currentThread().getName() + " : " + " Closing socket..");
                 socket.close();
             } catch (IOException e) {
                 e.printStackTrace();
-            }
+            }*/
         }
 
         return 0;

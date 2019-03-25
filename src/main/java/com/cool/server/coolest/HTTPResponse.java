@@ -22,7 +22,8 @@ public class HTTPResponse {
 
     public HTTPResponse(File file) throws IOException {
         this.contentLength = file.length();
-        this.fileData = Files.readAllBytes(file.toPath());
+        this.fileData = file.getAbsolutePath().contains("miffy") ? FileCacheService.getCacheService().getCacheMiffy() : Files.readAllBytes(file.toPath());
+        //this.fileData = Files.readAllBytes(file.toPath());
         this.content = file;
         this.setContentType(file.getName());
         this.setContentDisposition("");
@@ -41,15 +42,15 @@ public class HTTPResponse {
 
     private void setContentType(String fileName) {
         final String name = fileName.toLowerCase();
-        if (fileName.endsWith(".html")) {
+        if (name.endsWith(".html")) {
             this.contentType = TEXT_HTML;
-        } else if(fileName.endsWith(".png")) {
+        } else if(name.endsWith(".png")) {
             this.contentType = IMAGE_PNG;
-        } else if(fileName.endsWith(".jpg") || name.endsWith("jpeg")) {
+        } else if(name.endsWith(".jpg") || name.endsWith("jpeg")) {
             this.contentType = IMAGE_JPEG;
-        } else if (fileName.endsWith(".mp4")) {
+        } else if (name.endsWith(".mp4")) {
             this.contentType = "";
-        } else if (fileName.endsWith(".ico")) {
+        } else if (name.endsWith(".ico")) {
             this.contentType = IMAGE_ICON;
         } else {
             this.contentType = TEXT_HTML;
@@ -70,6 +71,7 @@ public class HTTPResponse {
         out.println("Server: Java Cool Server");
         out.println("Date: " + new Date());
         out.println("Content-length: " + this.contentLength);
+        out.println("Connection: keep-alive");
 
         out.println("Content-type: " + this.contentType);
         out.println();
@@ -84,6 +86,15 @@ public class HTTPResponse {
     public void writeContent(BufferedOutputStream outputStream) throws IOException {
         outputStream.write(fileData);
         outputStream.flush();
+    }
+
+
+    public File getContent() {
+        return content;
+    }
+
+    public byte[] getFileData() {
+        return fileData;
     }
 
     @Override
