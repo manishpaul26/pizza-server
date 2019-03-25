@@ -11,7 +11,7 @@ public class CommandLineArguments {
 
     private static CommandLineArguments instance;
 
-    private int queueSize;
+    private int queueSize = 200;
     private Integer poolSize;
     private Integer maxPoolSize;
 
