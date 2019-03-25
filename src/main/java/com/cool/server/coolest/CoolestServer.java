@@ -43,13 +43,11 @@ public class CoolestServer implements Runnable {
 
     public static void main(String args[]) {
 
-        CommandLineArguments arguments = new CommandLineArguments(args);
+        CommandLineArguments arguments = CommandLineArguments.getCommandLineArgument(args);
 
         try (final ServerSocket serverSocket = new ServerSocket(PORT)) {
 
             System.out.println("Starting server on port.. " + serverSocket.getLocalPort());
-            //ThreadPoolExecutor executor =
-              //      (ThreadPoolExecutor) Executors.newFixedThreadPool(3);
 
             ThreadPoolExecutor executor =  ThreadFactory.getThreadPoolExecutor(arguments);
 
@@ -58,6 +56,7 @@ public class CoolestServer implements Runnable {
 
                 Socket newConnection = serverSocket.accept();
                 newConnection.setKeepAlive(true);
+                newConnection.setSoTimeout(500);
 
                 CoolestServer server = new CoolestServer(newConnection);
 

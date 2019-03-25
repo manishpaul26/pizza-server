@@ -65,9 +65,9 @@ public class HTTPRequest {
         this.bytes = arrayOutputStream.toByteArray();
 
         // Disabling write
-        if (false) {
+        if (true) {
             System.out.println(Thread.currentThread().getId() + " : " + Thread.currentThread().getName() + " : " + " ********** Headers start **********");
-            headerInput.forEach(s -> System.out.println("\t" + s));
+            headerInput.forEach(s -> System.out.println("\t ---" + Thread.currentThread().getId() + " : " + Thread.currentThread().getName() + " : "  + s));
             System.out.println(Thread.currentThread().getId() + " : " + Thread.currentThread().getName() + " : " + " ********** Headers end **********");
         }
 
@@ -90,5 +90,9 @@ public class HTTPRequest {
 
     public byte[] getBytes() {
         return bytes;
+    }
+
+    public HTTPHeader getHeaders() {
+        return headers;
     }
 }

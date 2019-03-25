@@ -1,11 +1,13 @@
 package com.cool.server.coolest.methods;
 
+import com.cool.server.coolest.CommandLineArguments;
 import com.cool.server.coolest.ContentTypes;
 import com.cool.server.coolest.CoolestServer;
 import com.cool.server.coolest.FileIO;
 import com.cool.server.coolest.HTTPRequest;
 import com.cool.server.coolest.HTTPResponse;
 import com.cool.server.coolest.Servlet;
+import com.cool.server.coolest.pojo.ContentDisposition;
 
 import java.io.BufferedOutputStream;
 import java.io.File;
@@ -56,28 +58,18 @@ public class PostMethod implements HTTPMethod {
         }
 
         String filePath = "content/new.jpg";
-        String filePathPlaceholder = "content/new-#.jpg";
-        Path path = Paths.get(filePath);
-        if (Files.exists(path)) {
-            int random = new Random().nextInt((10 - 1) + 1) + 1;
-            filePath = filePathPlaceholder.replace("#", String.valueOf(random));
-        }
+        ContentDisposition contentDisposition = request.getHeaders().getContentDisposition();
+        String requestFileName = contentDisposition != null ? contentDisposition.getName() : filePath;
 
-
-
-        // TODO- revert
-        // To test synch
-        filePath = "content/new.jpg";
-
-        File file = new File(filePath);
-
+        CommandLineArguments arguments = CommandLineArguments.getCommandLineArgument(null);
+        String fileName =  arguments.isWriteToSameFile() ? filePath : requestFileName;
 
         try (BufferedOutputStream writer = new BufferedOutputStream(new FileOutputStream(filePath));
              BufferedOutputStream outputStream = new BufferedOutputStream(socket.getOutputStream());
              PrintWriter out = new PrintWriter(socket.getOutputStream())) {
 
 
-            boolean status = FileIO.write(filePath, writer, request.getBytes());
+            boolean status = FileIO.write(fileName, writer, request.getBytes());
 
             final String statusCode = status ?  "SUCCESS" : "FAILED";
 
@@ -95,13 +87,8 @@ public class PostMethod implements HTTPMethod {
             outputStream.write(statusCode.getBytes());
             outputStream.flush();
 
-
             System.out.println(Thread.currentThread().getId() + " : " + Thread.currentThread().getName() + " : " + " Size of bytes : " + request.getBytes().length);
 
-
-
-            //writer.write(request.getBytes());
-            //writer.flush();
         } catch (IOException e) {
             e.printStackTrace();
         }
