@@ -43,7 +43,7 @@ public class PizzaServer implements Runnable {
 
         try (final ServerSocket serverSocket = new ServerSocket(PORT)) {
 
-            System.out.println("Starting server on port.. " + serverSocket.getLocalPort());
+            System.out.println("Starting Pizza server on port.. " + serverSocket.getLocalPort());
 
             ThreadPoolExecutor executor =  ThreadFactory.getThreadPoolExecutor(arguments);
 
