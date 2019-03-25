@@ -37,7 +37,7 @@ public class CoolestServer implements Runnable {
 
 
     /**
-     * -DpoolSize=5 -DmaxPoolSize=10 -DqueueSize=100
+     * -DpoolSize=5 -DmaxPoolSize=10 -DqueueSize=100 -DsocketTimeOut=4000 -DwriteToSameFile=true
      * @param args
      */
 
@@ -56,7 +56,7 @@ public class CoolestServer implements Runnable {
 
                 Socket newConnection = serverSocket.accept();
                 newConnection.setKeepAlive(true);
-                newConnection.setSoTimeout(500);
+                newConnection.setSoTimeout(arguments.getSocketTimeOut());
 
                 CoolestServer server = new CoolestServer(newConnection);
 

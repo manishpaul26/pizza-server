@@ -2,6 +2,7 @@ package com.cool.server.coolest;
 
 import org.apache.commons.lang3.StringUtils;
 
+import java.net.SocketOptions;
 import java.util.Arrays;
 import java.util.List;
 
@@ -10,11 +11,13 @@ public class CommandLineArguments {
 
     private static CommandLineArguments instance;
 
-    private int queue;
+    private int queueSize;
     private Integer poolSize;
     private Integer maxPoolSize;
 
     private boolean writeToSameFile;
+
+    private Integer socketTimeOut = SocketOptions.SO_TIMEOUT;
 
     public static CommandLineArguments getCommandLineArgument(String[] args) {
         if (instance == null) {
@@ -37,9 +40,11 @@ public class CommandLineArguments {
             } else if (StringUtils.containsIgnoreCase(arg,"poolSize")) {
                 this.poolSize = getInteger(arg, 5);
             } else if (StringUtils.containsIgnoreCase(arg,"queueSize")) {
-                this.queue = getInteger(arg, 100);
+                this.queueSize = getInteger(arg, 100);
             } else if (StringUtils.containsIgnoreCase(arg,"writeToSameFile")) {
                 this.writeToSameFile = getValue(arg, false);
+            } else if (StringUtils.containsIgnoreCase(arg,"socketTimeOut")) {
+                this.socketTimeOut = getInteger(arg, SocketOptions.SO_TIMEOUT);
             }
         }
 
@@ -67,7 +72,7 @@ public class CommandLineArguments {
     }
 
     public int getQueueSize() {
-        return queue;
+        return queueSize;
     }
 
     public Integer getPoolSize() {
@@ -82,13 +87,18 @@ public class CommandLineArguments {
         return writeToSameFile;
     }
 
+    public Integer getSocketTimeOut() {
+        return socketTimeOut;
+    }
+
     @Override
     public String toString() {
         return "CommandLineArguments{" +
-                "queue=" + queue +
+                "queueSize=" + queueSize +
                 ", poolSize=" + poolSize +
                 ", maxPoolSize=" + maxPoolSize +
                 ", writeToSameFile=" + writeToSameFile +
+                ", socketTimeOut=" + socketTimeOut +
                 '}';
     }
 }

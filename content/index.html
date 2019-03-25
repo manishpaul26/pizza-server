@@ -1,14 +1,29 @@
 <html>
     <head>
     </head>
-    <body>
-        Hello world!!
+    <body style="background: black;">
+
+
+        <div>
+            <center><h2 style="color: white;">Hello world!</h2></center>
+            <!-- <h3><a href="sign-in.html"> Sign In</a></h3> -->
+        </div>
+        <div style="position: absolute;left: 5%;margin-top: 40px;">
+            
+            <img height="300px" src="images/milky-way.jpeg" />
+            <img height="300px" src="images/aurora-night.jpg" />
+            <img height="300px" src="images/northern-lights.jpg" />
+            <form method="GET" action="/download">
+                <button color="white">Download</button>
+            </form>
+
+        </div>
         
-    
-        <form method="post" action="/bin/submit" enctype="multipart/form-data">
-            Select image to upload:
-            <input type="file" name="fileToUpload" id="fileToUpload">
-            <input type="submit" value="Upload Image" name="submit">
-        </form>
+        <div align="center" style="margin-top: 30px; position: absolute; top: 50%;left: 30%;">
+            <video width="700" height="400" controls autoplay>
+                <source src="spring.mp4" type="video/mp4">
+            </video>
+        </div>
+
     </body>
 </html>

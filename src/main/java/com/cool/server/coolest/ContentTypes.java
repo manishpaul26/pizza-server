@@ -12,5 +12,7 @@ public class ContentTypes {
 
     public static final String APPLICATION_OCTET_STREAM = "application/octet-stream";
 
+    public static final String VIDEO_MP4 = "video/mp4";
+
 
 }

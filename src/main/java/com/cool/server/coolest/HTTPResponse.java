@@ -49,7 +49,7 @@ public class HTTPResponse {
         } else if(name.endsWith(".jpg") || name.endsWith("jpeg")) {
             this.contentType = IMAGE_JPEG;
         } else if (name.endsWith(".mp4")) {
-            this.contentType = "";
+            this.contentType = VIDEO_MP4;
         } else if (name.endsWith(".ico")) {
             this.contentType = IMAGE_ICON;
         } else {
