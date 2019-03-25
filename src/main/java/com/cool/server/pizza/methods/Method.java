@@ -1,4 +1,4 @@
-package com.cool.server.coolest.methods;
+package com.cool.server.pizza.methods;
 
 public enum Method {
 

@@ -1,8 +1,4 @@
-package com.cool.server.coolest;
-
-import com.cool.server.coolest.methods.GetMethod;
-
-import java.lang.annotation.Annotation;
+package com.cool.server.pizza;
 
 public class TestMain {
 

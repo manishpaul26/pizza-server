@@ -1,4 +1,4 @@
-package com.cool.server.coolest;
+package com.cool.server.pizza;
 
 public class ContentTypes {
 

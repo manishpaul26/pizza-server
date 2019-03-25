@@ -1,19 +1,16 @@
-package com.cool.server.coolest;
+package com.cool.server.pizza;
 
-import com.cool.server.coolest.annotations.ChocoServlet;
+import com.cool.server.pizza.annotations.ChocoServlet;
 
 import java.io.BufferedOutputStream;
-import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintWriter;
 import java.net.Socket;
-import java.nio.file.Files;
 import java.util.Date;
 
-import static com.cool.server.coolest.ContentTypes.IMAGE_JPEG;
+import static com.cool.server.pizza.ContentTypes.IMAGE_JPEG;
 
 @ChocoServlet(path = "/download")
 public class DownloadServlet {

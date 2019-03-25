@@ -1,4 +1,4 @@
-package com.cool.server.coolest.exceptions;
+package com.cool.server.pizza.exceptions;
 
 public class MethodNotSupportedException extends Throwable {
 

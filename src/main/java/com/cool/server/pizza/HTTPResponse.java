@@ -1,14 +1,13 @@
-package com.cool.server.coolest;
+package com.cool.server.pizza;
 
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.nio.file.Files;
-import java.util.Arrays;
 import java.util.Date;
 
-import static com.cool.server.coolest.ContentTypes.*;
+import static com.cool.server.pizza.ContentTypes.*;
 
 public class HTTPResponse {
 

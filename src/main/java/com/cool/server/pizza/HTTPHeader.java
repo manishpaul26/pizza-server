@@ -1,6 +1,6 @@
-package com.cool.server.coolest;
+package com.cool.server.pizza;
 
-import com.cool.server.coolest.pojo.ContentDisposition;
+import com.cool.server.pizza.pojo.ContentDisposition;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.List;

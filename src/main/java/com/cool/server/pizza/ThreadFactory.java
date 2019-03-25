@@ -1,4 +1,4 @@
-package com.cool.server.coolest;
+package com.cool.server.pizza;
 
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;

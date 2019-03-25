@@ -1,9 +1,8 @@
-package com.cool.server.coolest.methods;
+package com.cool.server.pizza.methods;
 
-import com.cool.server.coolest.ContentTypes;
-import com.cool.server.coolest.HTTPRequest;
-import com.cool.server.coolest.HTTPResponse;
-import com.cool.server.coolest.NotFoundResponse;
+import com.cool.server.pizza.HTTPRequest;
+import com.cool.server.pizza.HTTPResponse;
+import com.cool.server.pizza.NotFoundResponse;
 
 import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
@@ -11,11 +10,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
-import java.lang.annotation.Annotation;
 import java.net.Socket;
-import java.nio.file.Files;
-import java.util.Date;
-import java.util.Set;
 
 public class GetMethod implements HTTPMethod {
 

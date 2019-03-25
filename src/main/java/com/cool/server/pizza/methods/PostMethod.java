@@ -1,30 +1,23 @@
-package com.cool.server.coolest.methods;
+package com.cool.server.pizza.methods;
 
-import com.cool.server.coolest.CommandLineArguments;
-import com.cool.server.coolest.ContentTypes;
-import com.cool.server.coolest.CoolestServer;
-import com.cool.server.coolest.FileIO;
-import com.cool.server.coolest.HTTPRequest;
-import com.cool.server.coolest.HTTPResponse;
-import com.cool.server.coolest.Servlet;
-import com.cool.server.coolest.pojo.ContentDisposition;
+import com.cool.server.pizza.CommandLineArguments;
+import com.cool.server.pizza.ContentTypes;
+import com.cool.server.pizza.PizzaServer;
+import com.cool.server.pizza.FileIO;
+import com.cool.server.pizza.HTTPRequest;
+import com.cool.server.pizza.pojo.ContentDisposition;
 
 import java.io.BufferedOutputStream;
-import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.net.Socket;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.Date;
-import java.util.Random;
 
-import static com.cool.server.coolest.methods.StatusCodes.SC_INTERNAL_SERVER_ERROR;
-import static com.cool.server.coolest.methods.StatusCodes.SC_OK;
+import static com.cool.server.pizza.methods.StatusCodes.SC_INTERNAL_SERVER_ERROR;
+import static com.cool.server.pizza.methods.StatusCodes.SC_OK;
 
 public class PostMethod implements HTTPMethod {
 
@@ -42,7 +35,7 @@ public class PostMethod implements HTTPMethod {
     @Override
     public int execute() {
 
-        Class<?> servlet = CoolestServer.servlets.get(request.getRequestPath());
+        Class<?> servlet = PizzaServer.servlets.get(request.getRequestPath());
         try {
             Object instance = servlet.newInstance();
             Method get = servlet.getDeclaredMethod("doPost", HTTPRequest.class, Socket.class);

@@ -1,4 +1,4 @@
-package com.cool.server.coolest.annotations;
+package com.cool.server.pizza.annotations;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

@@ -1,4 +1,4 @@
-package com.cool.server.coolest.pojo;
+package com.cool.server.pizza.pojo;
 
 import java.util.StringTokenizer;
 

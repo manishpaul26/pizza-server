@@ -1,27 +1,23 @@
-package com.cool.server.coolest;
+package com.cool.server.pizza;
 
-import com.cool.server.coolest.annotations.ChocoServlet;
-import com.cool.server.coolest.exceptions.MethodNotSupportedException;
-import com.cool.server.coolest.methods.HTTPMethod;
-import com.cool.server.coolest.methods.HTTPRequestResolverFactory;
+import com.cool.server.pizza.annotations.ChocoServlet;
+import com.cool.server.pizza.exceptions.MethodNotSupportedException;
+import com.cool.server.pizza.methods.HTTPMethod;
+import com.cool.server.pizza.methods.HTTPRequestResolverFactory;
 import org.reflections.Reflections;
 
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.net.SocketException;
-import java.net.SocketOptions;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
-import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
-import java.util.concurrent.TimeUnit;
 
-public class CoolestServer implements Runnable {
+public class PizzaServer implements Runnable {
 
     public static final int PORT = 4444;
 
@@ -30,7 +26,7 @@ public class CoolestServer implements Runnable {
     public static Map<String, Class<?>> servlets;
 
 
-    CoolestServer(Socket connection) {
+    PizzaServer(Socket connection) {
         this.socket = connection;
         servlets = loadServlets();
     }
@@ -58,7 +54,7 @@ public class CoolestServer implements Runnable {
                 newConnection.setKeepAlive(true);
                 newConnection.setSoTimeout(arguments.getSocketTimeOut());
 
-                CoolestServer server = new CoolestServer(newConnection);
+                PizzaServer server = new PizzaServer(newConnection);
 
                 executor.execute(server);
                 BlockingQueue<Runnable> queue = executor.getQueue();

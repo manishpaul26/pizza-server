@@ -1,4 +1,4 @@
-package com.cool.server.coolest;
+package com.cool.server.pizza;
 
 import java.io.File;
 import java.io.IOException;
@@ -6,7 +6,7 @@ import java.nio.file.Files;
 import java.util.HashMap;
 import java.util.Map;
 
-import static com.cool.server.coolest.Constants.MIFFY;
+import static com.cool.server.pizza.Constants.MIFFY;
 
 public class FileCacheService {
 

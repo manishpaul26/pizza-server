@@ -1,7 +1,7 @@
-package com.cool.server.coolest.methods;
+package com.cool.server.pizza.methods;
 
-import com.cool.server.coolest.HTTPRequest;
-import com.cool.server.coolest.exceptions.MethodNotSupportedException;
+import com.cool.server.pizza.HTTPRequest;
+import com.cool.server.pizza.exceptions.MethodNotSupportedException;
 
 import java.net.Socket;
 

@@ -1,6 +1,6 @@
-package com.cool.server.coolest;
+package com.cool.server.pizza;
 
-import com.cool.server.coolest.annotations.ChocoServlet;
+import com.cool.server.pizza.annotations.ChocoServlet;
 
 import java.net.Socket;
 
