@@ -99,17 +99,6 @@ public class PizzaServer implements Runnable {
             e.printStackTrace();
         }
 
-        /**
-        try {
-            socket.setKeepAlive(true);
-            System.out.println(Thread.currentThread().getId() + " : " + Thread.currentThread().getName() + " : " + "Is Socket closed? : " + socket.isClosed()
-                    + " Is input shutdown? : " + socket.isInputShutdown()
-                    + " Is connected? : " + socket.isConnected());
-        } catch (SocketException e) {
-            e.printStackTrace();
-        }
-         **/
-
         System.out.println(Thread.currentThread().getId() + " : " + Thread.currentThread().getName() + " : " + " exiting..");
 
     }
