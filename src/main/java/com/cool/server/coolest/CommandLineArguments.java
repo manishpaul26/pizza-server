@@ -17,6 +17,8 @@ public class CommandLineArguments {
 
     private boolean writeToSameFile;
 
+    private boolean verbose;
+
     private Integer socketTimeOut = SocketOptions.SO_TIMEOUT;
 
     public static CommandLineArguments getCommandLineArgument(String[] args) {
@@ -45,6 +47,8 @@ public class CommandLineArguments {
                 this.writeToSameFile = getValue(arg, false);
             } else if (StringUtils.containsIgnoreCase(arg,"socketTimeOut")) {
                 this.socketTimeOut = getInteger(arg, SocketOptions.SO_TIMEOUT);
+            } else if (StringUtils.containsIgnoreCase(arg,"verbose")) {
+                this.verbose = getValue(arg, false);
             }
         }
 
@@ -89,6 +93,10 @@ public class CommandLineArguments {
 
     public Integer getSocketTimeOut() {
         return socketTimeOut;
+    }
+
+    public boolean isVerbose() {
+        return verbose;
     }
 
     @Override

@@ -64,8 +64,9 @@ public class HTTPRequest {
 
         this.bytes = arrayOutputStream.toByteArray();
 
+        boolean verbose = CommandLineArguments.getCommandLineArgument(null).isVerbose();
         // Disabling write
-        if (true) {
+        if (verbose) {
             System.out.println(Thread.currentThread().getId() + " : " + Thread.currentThread().getName() + " : " + " ********** Headers start **********");
             headerInput.forEach(s -> System.out.println("\t ---" + Thread.currentThread().getId() + " : " + Thread.currentThread().getName() + " : "  + s));
             System.out.println(Thread.currentThread().getId() + " : " + Thread.currentThread().getName() + " : " + " ********** Headers end **********");

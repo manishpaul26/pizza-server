@@ -37,7 +37,7 @@ public class CoolestServer implements Runnable {
 
 
     /**
-     * -DpoolSize=5 -DmaxPoolSize=10 -DqueueSize=100 -DsocketTimeOut=4000 -DwriteToSameFile=true
+     * -DpoolSize=5 -DmaxPoolSize=10 -DqueueSize=100 -DsocketTimeOut=4000 -DwriteToSameFile=true -Dverbose=false
      * @param args
      */
 
@@ -100,6 +100,7 @@ public class CoolestServer implements Runnable {
             e.printStackTrace();
         }
 
+        /**
         try {
             socket.setKeepAlive(true);
             System.out.println(Thread.currentThread().getId() + " : " + Thread.currentThread().getName() + " : " + "Is Socket closed? : " + socket.isClosed()
@@ -108,6 +109,7 @@ public class CoolestServer implements Runnable {
         } catch (SocketException e) {
             e.printStackTrace();
         }
+         **/
 
         System.out.println(Thread.currentThread().getId() + " : " + Thread.currentThread().getName() + " : " + " exiting..");
 

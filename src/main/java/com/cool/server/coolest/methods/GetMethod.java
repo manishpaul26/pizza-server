@@ -60,10 +60,8 @@ public class GetMethod implements HTTPMethod {
 
                 System.out.println(Thread.currentThread().getId() + " : " + Thread.currentThread().getName() + " : " + " Sending...");
 
-                String contentDisposition = "Content-Disposition: attachment; filename=miffy.png";
-
                 HTTPResponse response = new HTTPResponse(file);
-                response.setContentDisposition(contentDisposition);
+                response.setContentDisposition("");
 
                 response.writeHeaders(out);
                 response.writeContent(outputStream);

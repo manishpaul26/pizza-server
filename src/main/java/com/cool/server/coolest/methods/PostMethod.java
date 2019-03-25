@@ -45,8 +45,8 @@ public class PostMethod implements HTTPMethod {
         Class<?> servlet = CoolestServer.servlets.get(request.getRequestPath());
         try {
             Object instance = servlet.newInstance();
-            Method get = servlet.getDeclaredMethod("doPost", HTTPRequest.class, HTTPResponse.class);
-            get.invoke(instance, request, null);
+            Method get = servlet.getDeclaredMethod("doPost", HTTPRequest.class, Socket.class);
+            get.invoke(instance, request, socket);
         } catch (NoSuchMethodException e) {
             e.printStackTrace();
         } catch (IllegalAccessException e) {
@@ -55,6 +55,12 @@ public class PostMethod implements HTTPMethod {
             e.printStackTrace();
         } catch (InstantiationException e) {
             e.printStackTrace();
+        }
+
+
+        // Download servlet has handled it.
+        if (request.getRequestPath().contains("download")) {
+            return 1;
         }
 
         String filePath = "content/new.jpg";

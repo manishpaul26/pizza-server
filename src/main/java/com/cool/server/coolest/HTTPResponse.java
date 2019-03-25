@@ -80,7 +80,7 @@ public class HTTPResponse {
     }
 
     public void setContentDisposition(String contentDisposition) {
-        this.contentDisposition = "";
+        this.contentDisposition = contentDisposition;
     }
 
     public void writeContent(BufferedOutputStream outputStream) throws IOException {
