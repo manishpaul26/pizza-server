@@ -75,7 +75,7 @@ public class HTTPRequest {
         }
 
         if (headerInput.isEmpty()) {
-            System.out.println(Thread.currentThread().getId() + " : " + Thread.currentThread().getName() + " : " + " Naughty Keep alive detected!!");
+            System.out.println(Thread.currentThread().getId() + " : " + Thread.currentThread().getName() + " : " + " Keeping alive..!");
             this.headers = new HTTPHeader();
         } else {
             this.headers = new HTTPHeader(headerInput);
