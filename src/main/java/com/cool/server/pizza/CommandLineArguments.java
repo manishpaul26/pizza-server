@@ -23,6 +23,8 @@ public class CommandLineArguments {
 
     private Integer socketTimeOut = SocketOptions.SO_TIMEOUT;
 
+    private boolean simulateCacheRace = false;
+
     public static CommandLineArguments getCommandLineArgument(String[] args) {
         if (instance == null) {
             instance = new CommandLineArguments(args);
@@ -53,6 +55,8 @@ public class CommandLineArguments {
                 this.verbose = getValue(arg, false);
             } else if (StringUtils.containsIgnoreCase(arg,"port")) {
                 this.port = getInteger(arg, 4444);
+            } else if (StringUtils.containsIgnoreCase(arg,"simulateCacheRace")) {
+                this.simulateCacheRace = getValue(arg, false);
             }
         }
 
@@ -103,6 +107,10 @@ public class CommandLineArguments {
         return verbose;
     }
 
+    public boolean isSimulateCacheRace() {
+        return simulateCacheRace;
+    }
+
     @Override
     public String toString() {
         return "CommandLineArguments{" +
@@ -113,6 +121,7 @@ public class CommandLineArguments {
                 ", verbose=" + verbose +
                 ", port=" + port +
                 ", socketTimeOut=" + socketTimeOut +
+                ", simulateCacheRace=" + simulateCacheRace +
                 '}';
     }
 

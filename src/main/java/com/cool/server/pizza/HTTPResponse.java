@@ -21,7 +21,7 @@ public class HTTPResponse {
 
     public HTTPResponse(File file) throws IOException {
         this.contentLength = file.length();
-        this.fileData = file.getAbsolutePath().contains("miffy") ? FileCacheService.getCacheService().getCacheMiffy() : Files.readAllBytes(file.toPath());
+        this.fileData = file.getAbsolutePath().contains("miffy") ? FileCacheService.getCacheService().getCachedMiffy() : Files.readAllBytes(file.toPath());
         //this.fileData = Files.readAllBytes(file.toPath());
         this.content = file;
         this.setContentType(file.getName());
