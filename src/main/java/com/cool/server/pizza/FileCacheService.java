@@ -70,23 +70,32 @@ public class FileCacheService {
     }
 
 
+    /**
+     * First check if the image exists in the cached map. If yes, then just returns the image.
+     *
+     * If the images is not cached, then it tries to synchronize the read from the disk so that the image is read from
+     * the file system only once. After that, it puts the image into the map and returns it.
+     * @param imageFIle
+     * @return
+     * @throws InterruptedException
+     */
     public byte[] getCachedImage(File imageFIle) throws InterruptedException {
-        if (cachedImages.containsKey(imageFIle.getPath())) {
+        String path = imageFIle.getPath().intern();
+        if (cachedImages.containsKey(path)) {
             System.out.println(Thread.currentThread().getId() + " : " + Thread.currentThread().getName() + " : Returning cached image : " + imageFIle);
-            return cachedImages.get(imageFIle.getPath());
+            return cachedImages.get(path);
         } else {
             try {
-
-                synchronized (imageFIle) {
-                    System.out.println(Thread.currentThread().getId() + " : " + Thread.currentThread().getName() + " : " + "Entering synchronized block for " + imageFIle.getPath());
-                    if (cachedImages.containsKey(imageFIle.getPath())) {
-                        System.out.println(Thread.currentThread().getId() + " : " + Thread.currentThread().getName() + " : " + "Image has been cached recently " + imageFIle.getPath());
-                        return cachedImages.get(imageFIle.getPath());
+                synchronized (path) {
+                    System.out.println(Thread.currentThread().getId() + " : " + Thread.currentThread().getName() + " : " + "Entering synchronized block for " + path);
+                    if (cachedImages.containsKey(path)) {
+                        System.out.println(Thread.currentThread().getId() + " : " + Thread.currentThread().getName() + " : " + "Image has been cached recently " + path);
+                        return cachedImages.get(path);
                     }
                     byte[] content = Files.readAllBytes(imageFIle.toPath());
-                    cachedImages.put(imageFIle.getPath(), content);
-                    System.out.println(Thread.currentThread().getId() + " : " + Thread.currentThread().getName() + " : " + "Image has been cached : " + imageFIle.getPath());
-                    return cachedImages.get(imageFIle.getPath());
+                    cachedImages.put(path, content);
+                    System.out.println(Thread.currentThread().getId() + " : " + Thread.currentThread().getName() + " : " + "Image has been cached successfully: " + path);
+                    return cachedImages.get(path);
                 }
 
             }  catch (IOException e) {

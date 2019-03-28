@@ -1,18 +1,13 @@
 package com.cool.server.pizza;
 
-import org.junit.Assert;
 import org.junit.Test;
-import org.mockito.Mockito;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.concurrent.ArrayBlockingQueue;
-import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 import java.util.concurrent.ThreadPoolExecutor;
@@ -25,6 +20,10 @@ import static org.junit.Assert.assertThat;
 public class FileCacheServiceTest {
 
 
+    /**
+     * This test sets the simulateCacheRace parameter to true, which means that the object will be initialized without any
+     * thread safety. All threads can happily initialize the instance without any synchronization.
+     */
     @Test
     public void testInefficientMultipleThreadCacheInitialization() {
 
@@ -72,7 +71,7 @@ public class FileCacheServiceTest {
         Map<String, Integer> uniqueImagesCached = new HashMap<>();
         Map<String, List<Future<byte[]>>> futures = new HashMap<>();
 
-        File imagesRoot = new File("content/images/junit");
+        File imagesRoot = new File("content/images/test");
         File[] images =  imagesRoot.listFiles();
 
         ThreadPoolExecutor executor = new ThreadPoolExecutor(100, 150, 1, TimeUnit.SECONDS, new ArrayBlockingQueue(500));
